@@ -1,28 +1,36 @@
 ﻿using Charme.Models;
+
 namespace Charme.Services
 {
     public class ContactService
     {
-        private Contact _contact; //guarda um contato na memória
-
-        public Contact GetContact() //esse é o get e vai me retornar o contato salvo
+        private Contact? _contact = new()
         {
+            Phone = "(00) 00000-0000",
+            Address = "Seu endereço aqui",
+            Instagram = "@seuinstagram"
+        };
+
+        public Contact? Get() => _contact;
+
+        public Contact Create(Contact contact)
+        {
+            _contact = contact;
             return _contact;
         }
 
-        public void SetContact(Contact contact) // esse é o post, está em standby
+        public Contact? Update(Contact contact)
         {
+            if (_contact == null) return null;
             _contact = contact;
+            return _contact;
         }
 
-        public ContactService()
+        public bool Delete()
         {
-            _contact = new Contact
-            {
-                Phone = "9157225554",
-                Address = "Rua Marinheiro - Marinhos - Marreco",
-                Instagram = "instagram/user15321"
-            };
+            if (_contact == null) return false;
+            _contact = null;
+            return true;
         }
     }
 }

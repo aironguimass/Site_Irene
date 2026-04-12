@@ -20,7 +20,7 @@ namespace Charme.Controllers
     [HttpGet]
     public ActionResult<List<Portfolio>> GetPortfolio()
     {
-        return _portfolioService.GetPortfolio();
+            return Ok(_portfolioService.GetPortfolio());
     }
 
 
@@ -37,6 +37,29 @@ namespace Charme.Controllers
         return Ok(item);
 
     }
+
+        [HttpPut("{id:int}")]
+        public IActionResult UpdatePortfolioItem(int id, [FromBody] Portfolio item)
+        {
+            if (item == null || string.IsNullOrWhiteSpace(item.Title) || string.IsNullOrWhiteSpace(item.Description))
+                return BadRequest("Dados do portfólio inválidos.");
+
+            var updated = _portfolioService.UpdatePortfolioItem(id, item);
+            if (updated == null) return NotFound();
+
+            return Ok(updated);
+        }
+
+
+        [HttpDelete("{id:int}")]
+        public IActionResult DeletePortfolioItem(int id)
+        {
+            var ok = _portfolioService.DeletePortfolioItem(id);
+
+            if (!ok) return NotFound();
+
+            return NoContent();
+        }
 }
     
 }

@@ -6,8 +6,6 @@ namespace Charme.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-
-
     public class ContactController : ControllerBase
     {
         private readonly ContactService _contactService;
@@ -17,26 +15,48 @@ namespace Charme.Controllers
             _contactService = contactService;
         }
 
-
-        [HttpGet] // vai retornar o contato salvo no código
-        public ActionResult<Contact> GetContact()
+        [HttpGet]
+        public ActionResult<Contact> Get()
         {
-            return _contactService.GetContact();
+            var contact = _contactService.Get();
+            if (contact == null) return NotFound();
+            return Ok(contact);
         }
 
-        [HttpPost] //recebe os dados do painel adm
-        public IActionResult AddContact([FromBody] Contact contact)
+        [HttpPost]
+        public IActionResult Create([FromBody] Contact contact)
         {
-            if (contact == null || string.IsNullOrEmpty(contact.Phone)
-                || string.IsNullOrEmpty(contact.Address)
-                || string.IsNullOrEmpty(contact.Instagram))
-
-            {
+            if (contact == null ||
+                string.IsNullOrWhiteSpace(contact.Phone) ||
+                string.IsNullOrWhiteSpace(contact.Address) ||
+                string.IsNullOrWhiteSpace(contact.Instagram))
                 return BadRequest("Dados do contato inválidos");
-            }
 
-                _contactService.SetContact(contact);
-                return Ok(contact);
+            return Ok(_contactService.Create(contact));
+        }
+
+        [HttpPut]
+        public IActionResult Update([FromBody] Contact contact)
+        {
+            if (contact == null ||
+                string.IsNullOrWhiteSpace(contact.Phone) ||
+                string.IsNullOrWhiteSpace(contact.Address) ||
+                string.IsNullOrWhiteSpace(contact.Instagram))
+                return BadRequest("Dados do contato inválidos");
+
+            var updated = _contactService.Update(contact);
+            if (updated == null) return NotFound();
+
+            return Ok(updated);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete()
+        {
+            var ok = _contactService.Delete();
+            if (!ok) return NotFound();
+
+            return NoContent();
         }
     }
 }

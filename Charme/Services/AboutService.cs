@@ -4,25 +4,32 @@ namespace Charme.Services
 {
     public class AboutService
     {
-        private About _about;
+        private About? _about = new()
+        {
+            Title = "Sobre o Charme",
+            Description = "O salão Charme nasceu em 2022 e oferece serviços de qualidade."
+        };
 
-        public About GetAbout() 
+        public About? Get() => _about;
+
+        public About Create(About about)
         {
-            return _about; //returna o que ta salvo na memória
-        }
-        public void SetAbout(About about)
-        {
-            _about = about; //define o objeto em uma memoria
-        }
-        public AboutService()
-        {
-            // Valor padrão inicial
-            _about = new About
-            {
-                Title = "Sobre o Charme",
-                Description = "O salão Charme nasceu em 2022 e oferece serviços de qualidade."
-            };
+            _about = about;
+            return _about;
         }
 
+        public About? Update(About about)
+        {
+            if (_about == null) return null;
+            _about = about;
+            return _about;
+        }
+
+        public bool Delete()
+        {
+            if (_about == null) return false;
+            _about = null;
+            return true;
+        }
     }
 }
