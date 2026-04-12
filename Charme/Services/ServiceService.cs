@@ -8,8 +8,8 @@ namespace Charme.Services
     {
         private readonly List<Service> _services = new()
         {
-            new Service { Id = 1, Name = "Corte de cabelo", Description = "Corte masculino e Feminino" },
-            new Service { Id = 2, Name = "Manicure", Description = "Manicure profissional" }
+            new Service { Id = 1, Name = "Corte de cabelo", Description = "Corte masculino e Feminino", ListaDescription = new List<string> {"Boné", "Short"} },
+            new Service { Id = 2, Name = "Manicure", Description = "Manicure profissional", ListaDescription = new List<string> { } }
         };
 
         public List<Service> GetServices() => _services;
@@ -29,6 +29,7 @@ namespace Charme.Services
 
             existing.Name = service.Name;
             existing.Description = service.Description;
+            existing.ListaDescription = service.ListaDescription;
             return existing;
         }
 
